@@ -4,4 +4,5 @@ gst-launch-1.0 ximagesrc xid=0x460000a use-damage=false \
     ! nvh264enc preset=low-latency-hq rc-mode=cbr bitrate=6000 gop-size=30 \
     ! h264parse config-interval=-1 \
     ! rtph264pay pt=96 config-interval=-1 mtu=1200 \
+    ! rtpulpfecenc pt=122 percentage=20 multipacket=true \
     ! udpsink host=10.0.1.2 port=5000 sync=false
