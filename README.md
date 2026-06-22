@@ -27,8 +27,8 @@ RTP receiver.
 - `sender_better.sh` — same as `sender.sh` plus ULP forward error correction
   (`rtpulpfecenc`, `multipacket=true`). **Pair with `receiver_better.sh`**,
   whose `rtpulpfecdec` recovers lost packets from the FEC stream (`pt=122`).
-- `sender_fullscreen1.sh` — captures the whole screen (no `xid`), `nvh264enc`
-  with `zerolatency=true`.
+- `sender_fullscreen1.sh` — captures the whole screen (no `xid`) with
+  `nvh264enc` (`preset=low-latency-hq`).
 - `sender_fullscreen2.sh` — captures the whole screen using the newer
   `nvcudah264enc` element (`preset=p4 tune=ultra-low-latency`).
 - `receiver.sh` — receives RTP, decodes with `avdec_h264`, displays it.
