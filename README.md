@@ -27,10 +27,8 @@ RTP receiver.
 - `sender_better.sh` — same as `sender.sh` plus ULP forward error correction
   (`rtpulpfecenc`, `multipacket=true`). **Pair with `receiver_better.sh`**,
   whose `rtpulpfecdec` recovers lost packets from the FEC stream (`pt=122`).
-- `sender_fullscreen1.sh` — captures the whole screen (no `xid`) with
+- `sender_fullscreen.sh` — captures the whole screen (no `xid`) with
   `nvh264enc` (`preset=low-latency-hq`).
-- `sender_fullscreen2.sh` — captures the whole screen using the newer
-  `nvcudah264enc` element (`preset=p4 tune=ultra-low-latency`).
 - `receiver.sh` — receives RTP, decodes with `avdec_h264`, displays it.
 - `receiver_better.sh` — loss-resilient receiver: larger jitter buffer plus
   FEC decode (`rtpulpfecdec`). Pairs with `sender_better.sh`.
@@ -49,7 +47,7 @@ interchangeable across families:
 
 | Sender | Transport | Use with receiver |
 | --- | --- | --- |
-| `sender.sh`, `sender_fullscreen1.sh`, `sender_fullscreen2.sh` | RTP | `receiver.sh` |
+| `sender.sh`, `sender_fullscreen.sh` | RTP | `receiver.sh` |
 | `sender_better.sh` | RTP + ULP-FEC | `receiver_better.sh` |
 | `sender_ffmpeg_vlc.sh` | MPEG-TS | `receiver_ffmpeg_vlc.sh` |
 
@@ -65,10 +63,11 @@ version once:
 ./setup-ubuntu-20.04.sh   # or ./setup-ubuntu-22.04.sh
 ```
 
-Then edit a sender (see Configuration below) and run it, e.g.:
+Then run a sender (see Configuration below). `sender.sh` and
+`sender_better.sh` take the X11 window ID as their first argument:
 
 ```bash
-./sender.sh
+./sender.sh 0x460000a
 ```
 
 On the receiver machine, run the matching receiver from the table above:
@@ -81,9 +80,10 @@ On the receiver machine, run the matching receiver from the table above:
 
 The senders hard-code values you will need to change:
 
-- `xid=` — the X11 window ID to capture (`sender.sh`, `sender_better.sh`).
-  Find it with `xwininfo`. The `*_fullscreen*` senders capture the whole
-  screen and have no `xid`.
+- window ID — `sender.sh` and `sender_better.sh` take the X11 window ID
+  to capture as their first argument (e.g. `./sender.sh 0x460000a`). Find
+  it with `xwininfo`. `sender_fullscreen.sh` captures the whole screen and
+  takes no window ID.
 - `host=` (GStreamer) / `udp://…` (ffmpeg) — the receiver's IP address,
   `10.0.1.2` by default everywhere.
 - `port=` — defaults to 5000; must match the receiver.

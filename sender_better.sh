@@ -1,5 +1,5 @@
 #!/bin/bash
-gst-launch-1.0 ximagesrc xid=0x460000a use-damage=false \
+gst-launch-1.0 ximagesrc xid=$1 use-damage=false \
     ! videoconvert ! video/x-raw,format=NV12 \
     ! nvh264enc preset=low-latency-hq rc-mode=cbr bitrate=6000 gop-size=30 \
     ! h264parse config-interval=-1 \
